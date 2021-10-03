@@ -14,6 +14,7 @@ function same([x, y], [j, k]) {
   }else {
     return !result;
   }
+  
 }
 
 // The game state to search for `cell` is passed as the `this` value of the function.
