@@ -27,19 +27,19 @@ const printCell = (cell, state) => {
 };
 
 const corners = (state = []) => {
-  if(state.length === 0){
-    return{
-      topRight: [0,0],
-      bottomLeft:[0,0]
+  if (state.length === 0) {
+    return {
+      topRight: [0, 0],
+      bottomLeft: [0, 0]
     };
   }
-  const xs = state.map(([x,_]) => x);
-  const ys = state.map(([_, y])=> y);
+
+  const xs = state.map(([x, _]) => x);
+  const ys = state.map(([_, y]) => y);
   return {
     topRight: [Math.max(...xs), Math.max(...ys)],
-    bottomRight: [Math.min(...xs), Math.min(...ys)]
+    bottomLeft: [Math.min(...xs), Math.min(...ys)]
   };
-
 };
 
 const printCells = state => {
@@ -71,19 +71,20 @@ const willBeAlive = (cell, state) => {
 };
 
 const calculateNext = (state) => {
-  const {bottomLeft, topRight} = corners(state);
+  const { bottomLeft, topRight } = corners(state);
   let result = [];
-  for(let y = topRight[1] +1; y >= bottomLeft[1]-1; y--){
-    for(let x = bottomLeft[0]- 1;x<= topRight[0]+1; x++){
-      result = result.concat(willBeAlive([x,y], state)?[[x,y]]:[]);
+  for (let y = topRight[1] + 1; y >= bottomLeft[1] - 1; y--) {
+    for (let x = bottomLeft[0] - 1; x <= topRight[0] + 1; x++) {
+      result = result.concat(willBeAlive([x, y], state) ? [[x, y]] : []);
     }
   }
+  return result;
 };
 
 const iterate = (state, iterations) => {
-  const states = [ state ];
-  for(let i = 0; i<iterations; i++){
-    state.push(calculateNext(state[states.length-1]));
+  const states = [state];
+  for(let i = 0; i < iterations; i++) {
+      states.push(calculateNext(states[states.length-1]));
   }
   return states;
 };
